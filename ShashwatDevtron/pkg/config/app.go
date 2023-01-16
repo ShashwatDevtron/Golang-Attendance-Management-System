@@ -1,30 +1,3 @@
-// //connecting it to database
-
-// package config
-
-// import (
-// 	"github.com/jinzhu/gorm"
-// 	_ "github.com/jinzhu/gorm/dialects/postgres"
-// )
-
-
-// 	//dbURL := "*postgres://postgres:sdadhich@localhost:5432/attendanceData"
-
-// 	var(
-// 		db * gorm.DB
-// 	)
-
-// 	func Connect(){
-// 		dbURL := "host=localhost port=5433 user=shashwat dbname=attendancedata sslmode=disable password=123456"
-// 		d, err := gorm.Open("postgres", dbURL)
-// 		if err != nil{
-// 			panic(err)
-// 		}
-// 		db = d
-// 	}
-// 	func GetDB() *gorm.DB{
-// 		return  db
-// 	}
 package config
 
 import (
