@@ -16,7 +16,7 @@ var NewStudent = models.Student{}//cretaing new student of type Student struct t
 var NewTeacher = models.Teacher{}
 var StudentTodayAttendance = models.StudentAttendance{}
 var TeacherTodayAttendance = models.TeacherAttendance{}
-var AttendanceOfThisClass = models.StudentAttendance{}
+
 
 
 
@@ -147,7 +147,7 @@ func GetAttendanceOfClass(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}
-	classDetails, _:= AttendanceOfThisClass.GetAttendanceOfClass(int(CLASS),int(DATE),time.Month(MONTH),int(YEAR))
+	classDetails, _:= StudentTodayAttendance.GetAttendanceOfClass(int(CLASS),int(DATE),time.Month(MONTH),int(YEAR))
 	res, _ := json.Marshal(classDetails)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
@@ -158,18 +158,13 @@ func GetAttendanceOfClass(w http.ResponseWriter, r *http.Request){
 
 
 func StudentPunchIn(w http.ResponseWriter, r *http.Request){
-	CreateSTudentAttendance := StudentTodayAttendance
-	
+	CreateSTudentAttendance := StudentTodayAttendance	
 	vars := mux.Vars(r)
 	studentId := vars["Id"]
-	
-
 	ID , err := strconv.ParseInt(studentId,10,32)
 	if err != nil{
 		fmt.Println("error while parsing")
-	}
-	
-	  
+	}	  
 	 studentTodayAttendenceDetail,_ := StudentTodayAttendance.GetStudentsTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
 	 if studentTodayAttendenceDetail.Punchin.IsZero(){		 
 	CreateSTudentAttendance.StudentID =uint(ID)
