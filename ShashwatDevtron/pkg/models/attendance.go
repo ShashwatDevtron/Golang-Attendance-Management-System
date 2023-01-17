@@ -136,10 +136,8 @@ func (a *StudentAttendance) DeleteTodaysStudentAttendance(Id int64, date int,mon
 
 func (a *TeacherAttendance) DeleteTodaysTeacherAttendance(Id int64, date int,month time.Month, year int){
 	var getTeacherAt TeacherAttendance
-	 db.Where("student_id=? AND date=? AND month=? AND year=?" ,uint(Id),date,month ,year).Delete(&getTeacherAt)	
+	 db.Where("teacher_id=? AND date=? AND month=? AND year=?" ,uint(Id),date,month ,year).Delete(&getTeacherAt)	
 }
-
-
 
   func (s *Student) GetStudent(Id int64)(*Student , *gorm.DB){
 	var getStudent Student
@@ -147,7 +145,8 @@ func (a *TeacherAttendance) DeleteTodaysTeacherAttendance(Id int64, date int,mon
 	return &getStudent, db
 }
 
-
-
-
-
+func (t *Teacher) GetTeacher(Id int64)(*Teacher , *gorm.DB){
+	var getTeacher Teacher
+	db := db.Where("ID=?",uint(Id)).Find(&getTeacher)
+	return &getTeacher, db
+}
