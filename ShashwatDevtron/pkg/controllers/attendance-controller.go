@@ -258,7 +258,7 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	CreateTeacherAttendance.Month = teacherTodayAttendenceDetail.Month
 	CreateTeacherAttendance.Date = teacherTodayAttendenceDetail.Date
 	CreateTeacherAttendance.Punchin = teacherTodayAttendenceDetail.Punchin
-		//delete student
+		//delete teacher
 	TeacherTodayAttendance.DeleteTodaysTeacherAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
 	teacherssTodaysAttendanceRecord.TeacherID = CreateTeacherAttendance.TeacherID
 	teacherssTodaysAttendanceRecord.Year = CreateTeacherAttendance.Year
