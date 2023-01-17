@@ -159,12 +159,18 @@ func GetAttendanceOfClass(w http.ResponseWriter, r *http.Request){
 
 func StudentPunchIn(w http.ResponseWriter, r *http.Request){
 	CreateSTudentAttendance := StudentTodayAttendance	
+	
 	vars := mux.Vars(r)
 	studentId := vars["Id"]
 	ID , err := strconv.ParseInt(studentId,10,32)
 	if err != nil{
 		fmt.Println("error while parsing")
 	}	  
+	DoesStudentExist,_ := NewStudent.GetStudent(ID)
+	if DoesStudentExist.ID == 0{
+		fmt.Fprintln(w,"Student with given Id does not exist")
+	}else{
+
 	 studentTodayAttendenceDetail,_ := StudentTodayAttendance.GetStudentsTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
 	 if studentTodayAttendenceDetail.Punchin.IsZero(){		 
 	CreateSTudentAttendance.StudentID =uint(ID)
@@ -182,6 +188,7 @@ func StudentPunchIn(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w,"You have already punched in for today")
 	}
 }
+}
 
 
 func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
@@ -192,6 +199,10 @@ func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}	
+	DoesTeacherExist,_ := NewTeacher.GetTeacher(ID)
+	if DoesTeacherExist.ID == 0{
+		fmt.Fprintln(w,"Teacher with given Id does not exist")
+	}else{
 
 	teacherTodayAttendenceDetail,_ := TeacherTodayAttendance.GetTeachersTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
 	
@@ -209,6 +220,7 @@ func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w,"You have already punched in for today")
 	}
 }
+}
 
 func StudentPunchOut(w http.ResponseWriter, r *http.Request){
 	studentsTodaysAttendanceRecord := StudentTodayAttendance
@@ -218,9 +230,17 @@ func StudentPunchOut(w http.ResponseWriter, r *http.Request){
 	ID , err := strconv.ParseInt(studentId,10,32)
 	if err != nil{
 		fmt.Println("error while parsing")
-	}	
+	}
+	DoesStudentExist,_ := NewStudent.GetStudent(ID)
+	if DoesStudentExist.ID == 0{
+		fmt.Fprintln(w,"Student with given Id does not exist")
+	}else{
 	studentTodayAttendenceDetail,_ := StudentTodayAttendance.GetStudentsTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
-	if studentTodayAttendenceDetail.Punchout.IsZero() && !studentTodayAttendenceDetail.Punchin.IsZero(){
+	if studentTodayAttendenceDetail.Punchin.IsZero(){
+		fmt.Fprintln(w, "You have not punched in for today")
+	}else if !studentTodayAttendenceDetail.Punchout.IsZero() && !studentTodayAttendenceDetail.Punchin.IsZero(){
+		fmt.Fprintln(w, "You have already punched out for today")
+	}else if studentTodayAttendenceDetail.Punchout.IsZero() && !studentTodayAttendenceDetail.Punchin.IsZero(){
 	CreateSTudentAttendance.StudentID =uint(ID)	
 	CreateSTudentAttendance.StudentClass = studentTodayAttendenceDetail.StudentClass
 	CreateSTudentAttendance.Year = studentTodayAttendenceDetail.Year
@@ -242,6 +262,9 @@ func StudentPunchOut(w http.ResponseWriter, r *http.Request){
 	w.Write(res)		
 	} 
 	}
+}
+
+
 func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	teacherssTodaysAttendanceRecord := TeacherTodayAttendance
 	CreateTeacherAttendance := TeacherTodayAttendance
@@ -251,14 +274,22 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}	
+	DoesTeacherExist,_ := NewTeacher.GetTeacher(ID)
+	if DoesTeacherExist.ID == 0{
+		fmt.Fprintln(w,"Teacher with given Id does not exist")
+	}else{
 	teacherTodayAttendenceDetail,_ := TeacherTodayAttendance.GetTeachersTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
-	 if teacherTodayAttendenceDetail.Punchout.IsZero() && !teacherTodayAttendenceDetail.Punchin.IsZero(){
+	if teacherTodayAttendenceDetail.Punchin.IsZero(){
+		fmt.Fprintln(w, "You have not punched in for today")
+	}else if !teacherTodayAttendenceDetail.Punchout.IsZero() && !teacherTodayAttendenceDetail.Punchin.IsZero(){
+		fmt.Fprintln(w, "You have already punched out for today")
+	}else if teacherTodayAttendenceDetail.Punchout.IsZero() && !teacherTodayAttendenceDetail.Punchin.IsZero(){
 	CreateTeacherAttendance.TeacherID =uint(ID)	
 	CreateTeacherAttendance.Year = teacherTodayAttendenceDetail.Year
 	CreateTeacherAttendance.Month = teacherTodayAttendenceDetail.Month
 	CreateTeacherAttendance.Date = teacherTodayAttendenceDetail.Date
 	CreateTeacherAttendance.Punchin = teacherTodayAttendenceDetail.Punchin
-		//delete teacher
+		//delete student
 	TeacherTodayAttendance.DeleteTodaysTeacherAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
 	teacherssTodaysAttendanceRecord.TeacherID = CreateTeacherAttendance.TeacherID
 	teacherssTodaysAttendanceRecord.Year = CreateTeacherAttendance.Year
@@ -270,5 +301,6 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	res, _:= json.Marshal(s)//converting it to json
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)		
+	}
 	}
 }
