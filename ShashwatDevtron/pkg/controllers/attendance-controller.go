@@ -47,12 +47,17 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}
+	DoesStudentExist,_ := NewStudent.GetStudent(ID)
+	if DoesStudentExist.ID == 0{
+		fmt.Fprintln(w,"Student with given Id does not exist")
+	}else{
 	student := NewStudent.DeleteStudent(ID)
 	//now giving response to user by postman in json format
 	res, _ := json.Marshal(student)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}
 }
 
 
@@ -64,12 +69,17 @@ func DeleteTeacher(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}
+	DoesTeacherExist,_ := NewTeacher.GetTeacher(ID)
+	if DoesTeacherExist.ID == 0{
+		fmt.Fprintln(w,"Teacher with given Id does not exist")
+	}else{
 	teacher := NewTeacher.DeleteTeacher(ID)
 	//now giving response to user by postman in json format
 	res, _ := json.Marshal(teacher)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}
 }
 
 func GetStudentAttendance(w http.ResponseWriter, r *http.Request){
@@ -90,11 +100,16 @@ func GetStudentAttendance(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}
+	DoesStudentExist,_ := NewStudent.GetStudent(ID)
+	if DoesStudentExist.ID == 0{
+		fmt.Fprintln(w,"Student with given Id does not exist")
+	}else{
 	studentDetails, _:= StudentTodayAttendance.GetStudentAttendance(ID,time.Month(MONTH), int(YEAR))
 	res, _ := json.Marshal(studentDetails)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}
 }
 
 
@@ -116,11 +131,16 @@ func GetTeacherAttendance(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		fmt.Println("error while parsing")
 	}
+	DoesTeacherExist,_ := NewTeacher.GetTeacher(ID)
+	if DoesTeacherExist.ID == 0{
+		fmt.Fprintln(w,"Teacher with given Id does not exist")
+	}else{
 	teacherDetails, _:= TeacherTodayAttendance.GetTeacherAttendance(ID,time.Month(MONTH), int(YEAR))
 	res, _ := json.Marshal(teacherDetails)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}
 }
 
 
