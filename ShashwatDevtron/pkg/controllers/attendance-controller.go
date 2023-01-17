@@ -178,6 +178,8 @@ func StudentPunchIn(w http.ResponseWriter, r *http.Request){
 	res, _:= json.Marshal(s)//converting it to json
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}else{
+		fmt.Fprintf(w,"You have already punched in for today")
 	}
 }
 
@@ -192,6 +194,7 @@ func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
 	}	
 
 	teacherTodayAttendenceDetail,_ := TeacherTodayAttendance.GetTeachersTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
+	
 	if teacherTodayAttendenceDetail.Punchin.IsZero(){
 	CreateTeacherAttendance.TeacherID =uint(ID)	
 	CreateTeacherAttendance.Year = time.Now().Year()
@@ -202,6 +205,8 @@ func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
 	res, _:= json.Marshal(s)//converting it to json
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+	}else{
+		fmt.Fprintf(w,"You have already punched in for today")
 	}
 }
 
@@ -228,15 +233,15 @@ func StudentPunchOut(w http.ResponseWriter, r *http.Request){
 	studentsTodaysAttendanceRecord.StudentClass = CreateSTudentAttendance.StudentClass
 	studentsTodaysAttendanceRecord.Year = CreateSTudentAttendance.Year
 	studentsTodaysAttendanceRecord.Date = CreateSTudentAttendance.Date
+	studentsTodaysAttendanceRecord.Month = CreateSTudentAttendance.Month
 	studentsTodaysAttendanceRecord.Punchin = CreateSTudentAttendance.Punchin
 	studentsTodaysAttendanceRecord.Punchout = time.Now()
 	s:= studentsTodaysAttendanceRecord.StudentPunchIn()
 	res, _:= json.Marshal(s)//converting it to json
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)		
+	} 
 	}
-}
-
 func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	teacherssTodaysAttendanceRecord := TeacherTodayAttendance
 	CreateTeacherAttendance := TeacherTodayAttendance
@@ -247,7 +252,7 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 		fmt.Println("error while parsing")
 	}	
 	teacherTodayAttendenceDetail,_ := TeacherTodayAttendance.GetTeachersTodayAttendance(ID,time.Now().Day(),time.Now().Month(),time.Now().Year())
-	if teacherTodayAttendenceDetail.Punchout.IsZero() && !teacherTodayAttendenceDetail.Punchin.IsZero(){
+	 if teacherTodayAttendenceDetail.Punchout.IsZero() && !teacherTodayAttendenceDetail.Punchin.IsZero(){
 	CreateTeacherAttendance.TeacherID =uint(ID)	
 	CreateTeacherAttendance.Year = teacherTodayAttendenceDetail.Year
 	CreateTeacherAttendance.Month = teacherTodayAttendenceDetail.Month
@@ -258,6 +263,7 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	teacherssTodaysAttendanceRecord.TeacherID = CreateTeacherAttendance.TeacherID
 	teacherssTodaysAttendanceRecord.Year = CreateTeacherAttendance.Year
 	teacherssTodaysAttendanceRecord.Date = CreateTeacherAttendance.Date
+	teacherssTodaysAttendanceRecord.Month = CreateTeacherAttendance.Month
 	teacherssTodaysAttendanceRecord.Punchin = CreateTeacherAttendance.Punchin
 	teacherssTodaysAttendanceRecord.Punchout = time.Now()
 	s:= teacherssTodaysAttendanceRecord.TeacherPunchIn()
@@ -266,4 +272,3 @@ func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
 	w.Write(res)		
 	}
 }
-
