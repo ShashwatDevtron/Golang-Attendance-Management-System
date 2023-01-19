@@ -38,15 +38,11 @@ type StudentAttendance struct{
 }
 
 
-
-
 func (s Student) CreateStudent() Student{
 	db.NewRecord(s)
 	db.Create(&s)
 	return s
 }
-
-
 
 func (s *Student) DeleteStudent(ID int64) Student{
 	var student Student
@@ -55,16 +51,11 @@ func (s *Student) DeleteStudent(ID int64) Student{
 }
  
 
-
-
 func (a *StudentAttendance) GetStudentAttendance(Id int64, month time.Month, year int)(*[]StudentAttendance , *gorm.DB){
 	var getStudentAt[] StudentAttendance
 	db := db.Where("student_id=? AND month=? AND year=?" ,uint(Id),month ,year).Find(&getStudentAt)
 	return &getStudentAt, db
 }
-
-
-
 
 func (a *StudentAttendance) GetAttendanceOfClass(class int, date int, month time.Month, year int )(*[]StudentAttendance , *gorm.DB){
 	var getClassAt[] StudentAttendance
@@ -72,15 +63,11 @@ func (a *StudentAttendance) GetAttendanceOfClass(class int, date int, month time
 	return &getClassAt, db
 }
 
-
-
 func (a StudentAttendance) StudentPunchIn() StudentAttendance{
 	db.NewRecord(a)
 	db.Create(&a)
 	return a
 }
-
-
 
 func (a *StudentAttendance) GetStudentsTodayAttendance(Id int64, date int,month time.Month, year int)(*StudentAttendance , *gorm.DB){
 	var getStudentAt StudentAttendance
@@ -88,15 +75,10 @@ func (a *StudentAttendance) GetStudentsTodayAttendance(Id int64, date int,month 
 	return &getStudentAt, db
 }
 
-
-
-
 func (a *StudentAttendance) DeleteTodaysStudentAttendance(Id int64, date int,month time.Month, year int){
 	var getStudentAt StudentAttendance
 	 db.Where("student_id=? AND date=? AND month=? AND year=?" ,uint(Id),date,month ,year).Delete(&getStudentAt)	
 }
-
-
 
   func (s *Student) GetStudent(Id int64)(*Student , *gorm.DB){
 	var getStudent Student
