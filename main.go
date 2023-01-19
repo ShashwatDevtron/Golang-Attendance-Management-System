@@ -12,5 +12,5 @@ func main(){
 	r := mux.NewRouter()
 	routes.RegisterAttendanceMangementRoutes(r)
 	http.Handle("/",r)
-	log.Fatal(http.ListenAndServe("localhost:9010",r))
+	log.Fatal(http.ListenAndServe(":9010",r))
 }
