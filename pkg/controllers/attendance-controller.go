@@ -12,10 +12,6 @@ import(
 	
 )
 
-
-
-
-
 func CreateStudent(w http.ResponseWriter, r *http.Request){
 	var NewStudent = models.Student{}
 	CreateStudent := &NewStudent
