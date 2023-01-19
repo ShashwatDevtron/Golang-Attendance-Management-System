@@ -12,16 +12,12 @@ import(
 	
 )
 
-var NewStudent = models.Student{}//cretaing new student of type Student struct that we defined in model
-var NewTeacher = models.Teacher{}
-var StudentTodayAttendance = models.StudentAttendance{}
-var TeacherTodayAttendance = models.TeacherAttendance{}
-
 
 
 
 
 func CreateStudent(w http.ResponseWriter, r *http.Request){
+	var NewStudent = models.Student{}
 	CreateStudent := &NewStudent
 	utils.ParseBody(r, CreateStudent)//utils mai ek function tha parse body 
 	s:= CreateStudent.CreateStudent()// s was somethig that was created in database and returned from the function create student
@@ -31,6 +27,7 @@ func CreateStudent(w http.ResponseWriter, r *http.Request){
 }
 
 func CreateTeacher(w http.ResponseWriter, r *http.Request){
+	var NewTeacher = models.Teacher{}
 	CreateTeacher := &NewTeacher
 	utils.ParseBody(r, CreateTeacher)//utils mai ek function tha parse body 
 	s:= CreateTeacher.CreateTeacher()// s was somethig that was created in database and returned from the function create student
@@ -41,6 +38,7 @@ func CreateTeacher(w http.ResponseWriter, r *http.Request){
 
 
 func DeleteStudent(w http.ResponseWriter, r *http.Request){
+	var NewStudent = models.Student{}
 	vars := mux.Vars(r)
 	studentId := vars["Id"]
 	ID, err := strconv.ParseInt(studentId, 0, 0)
@@ -63,6 +61,7 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request){
 
 
 func DeleteTeacher(w http.ResponseWriter, r *http.Request){
+	var NewTeacher = models.Teacher{}
 	vars := mux.Vars(r)
 	teacherId := vars["Id"]
 	ID, err := strconv.ParseInt(teacherId, 0, 0)
@@ -83,6 +82,8 @@ func DeleteTeacher(w http.ResponseWriter, r *http.Request){
 }
 
 func GetStudentAttendance(w http.ResponseWriter, r *http.Request){
+	var StudentTodayAttendance = models.StudentAttendance{}
+	var NewStudent = models.Student{}
 	vars := mux.Vars(r)
 	studentId := vars["Id"]
 	thisMonth := vars["month"]
@@ -114,6 +115,9 @@ func GetStudentAttendance(w http.ResponseWriter, r *http.Request){
 
 
 func GetTeacherAttendance(w http.ResponseWriter, r *http.Request){
+	
+var TeacherTodayAttendance = models.TeacherAttendance{}
+	var NewTeacher = models.Teacher{}
 	vars := mux.Vars(r)
 	teacherId := vars["Id"]
 	thisMonth := vars["month"]
@@ -146,6 +150,7 @@ func GetTeacherAttendance(w http.ResponseWriter, r *http.Request){
 
 
 func GetAttendanceOfClass(w http.ResponseWriter, r *http.Request){
+	var StudentTodayAttendance = models.StudentAttendance{}
 	vars := mux.Vars(r)
 	classIs := vars["class"]
 	dateIs := vars["date"]
@@ -178,6 +183,8 @@ func GetAttendanceOfClass(w http.ResponseWriter, r *http.Request){
 
 
 func StudentPunchIn(w http.ResponseWriter, r *http.Request){
+	var StudentTodayAttendance = models.StudentAttendance{}
+	var NewStudent = models.Student{}
 	CreateSTudentAttendance := StudentTodayAttendance	
 	
 	vars := mux.Vars(r)
@@ -212,6 +219,9 @@ func StudentPunchIn(w http.ResponseWriter, r *http.Request){
 
 
 func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
+	
+var TeacherTodayAttendance = models.TeacherAttendance{}
+	var NewTeacher = models.Teacher{}
 	CreateTeacherAttendance := TeacherTodayAttendance
 	vars := mux.Vars(r)
 	studentId := vars["Id"]
@@ -243,6 +253,8 @@ func TeacherPunchIn(w http.ResponseWriter, r *http.Request){
 }
 
 func StudentPunchOut(w http.ResponseWriter, r *http.Request){
+	var StudentTodayAttendance = models.StudentAttendance{}
+	var NewStudent = models.Student{}
 	studentsTodaysAttendanceRecord := StudentTodayAttendance
 	CreateSTudentAttendance := StudentTodayAttendance
 	vars := mux.Vars(r)
@@ -286,6 +298,9 @@ func StudentPunchOut(w http.ResponseWriter, r *http.Request){
 
 
 func TeacherPunchOut(w http.ResponseWriter, r *http.Request){
+	
+var TeacherTodayAttendance = models.TeacherAttendance{}
+	var NewTeacher = models.Teacher{}
 	teacherssTodaysAttendanceRecord := TeacherTodayAttendance
 	CreateTeacherAttendance := TeacherTodayAttendance
 	vars := mux.Vars(r)
