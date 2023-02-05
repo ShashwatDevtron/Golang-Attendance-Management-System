@@ -32,7 +32,7 @@ WORKDIR /root/
 COPY --from=builder /app/main .
 COPY --from=builder /app/.env .       
 
-# Expose port 8080 to the outside world
+# Expose port 9010 to the outside world
 EXPOSE 9010
 
 #Command to run the executable
